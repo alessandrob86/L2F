@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, Database, MousePointerClick, TrendingUp, CheckCircle, Package, Truck, Coins, RotateCcw, Layers, Rocket, Check, X, AlertCircle } from 'lucide-react';
+import { Database, TrendingUp, Coins, RotateCcw, Layers, Rocket, Check, X, AlertCircle } from 'lucide-react';
 import styles from './Scrollytelling.module.css';
 
 // --- Mockup Components ---
