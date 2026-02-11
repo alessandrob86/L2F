@@ -1,0 +1,348 @@
+/* Variable definitions based on brand-guidelines.md */
+.pricingSection {
+    background-color: transparent;
+    /* Assuming background motif handles the main bg */
+    padding: 8rem 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.container {
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 4rem;
+}
+
+.title {
+    font-family: 'MADE TOMMY', sans-serif;
+    font-weight: 800;
+    font-size: 3rem;
+    color: #ffffff;
+    margin-bottom: 1rem;
+}
+
+.subtitle {
+    font-family: 'MADE TOMMY', sans-serif;
+    font-weight: 300;
+    font-size: 1.25rem;
+    color: #b3b3b3;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Layout */
+.layout {
+    display: flex;
+    gap: 2rem;
+    align-items: stretch;
+}
+
+@media (max-width: 1024px) {
+    .layout {
+        flex-direction: column;
+    }
+}
+
+/* Base Card Styles - Glassmorphism */
+.card {
+    position: relative;
+    background: rgba(26, 26, 26, 0.4);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 24px;
+    padding: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, background 0.3s ease;
+    overflow: hidden;
+}
+
+.card:hover {
+    background: rgba(26, 26, 26, 0.6);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Home Card Specifics */
+.homeCard {
+    flex: 1;
+    min-width: 300px;
+    background: linear-gradient(145deg, rgba(26, 26, 26, 0.6) 0%, rgba(5, 5, 5, 0.8) 100%);
+}
+
+.flexWrapper {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.flexHeader {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.flexTitle {
+    font-family: 'MADE TOMMY', sans-serif;
+    font-weight: 700;
+    font-size: 2rem;
+    color: #ffffff;
+}
+
+.flexSubtitle {
+    color: #e63935;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.875rem;
+}
+
+/* Horizontal Scroll for Flex Options on Mobile */
+.flexOptionsGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+}
+
+@media (max-width: 768px) {
+    .flexOptionsGrid {
+        display: flex;
+        overflow-x: auto;
+        padding-bottom: 1.5rem;
+        scroll-snap-type: x mandatory;
+        gap: 1rem;
+        /* Hide scrollbar */
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+
+    .flexOptionsGrid::-webkit-scrollbar {
+        display: none;
+    }
+
+    .flexOptionCard {
+        min-width: 280px;
+        scroll-snap-align: center;
+    }
+}
+
+/* Flex Option Card */
+.flexOptionCard {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    height: 100%;
+}
+
+.flexOptionCard:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+/* Recommended Badge */
+.recommendedBadge {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #e63935;
+    color: white;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    box-shadow: 0 4px 12px rgba(230, 57, 53, 0.3);
+    z-index: 10;
+}
+
+/* Top Tier Border Beam Effect */
+.topTierCard {
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    border-radius: 24px !important;
+    border: none !important;
+    padding: 2.5rem;
+}
+
+.topTierCard::before {
+    content: "";
+    position: absolute;
+    inset: -4px;
+    z-index: -1;
+    background: conic-gradient(from 0deg,
+            transparent 0deg,
+            transparent 100deg,
+            #e63935 180deg,
+            transparent 280deg,
+            transparent 360deg);
+    animation: borderRotate 3s linear infinite;
+}
+
+.topTierCard::after {
+    content: "";
+    position: absolute;
+    inset: 1.5px;
+    z-index: -1;
+    background: rgba(20, 20, 20, 0.95);
+    border-radius: 22.5px;
+    backdrop-filter: blur(20px);
+}
+
+@keyframes borderRotate {
+    from {
+        --angle: 0deg;
+        transform: rotate(0deg);
+    }
+
+    to {
+        --angle: 360deg;
+        transform: rotate(360deg);
+    }
+}
+
+/* Interaction States */
+.cardSelected {
+    border-color: #e63935;
+    box-shadow: 0 0 30px rgba(230, 57, 53, 0.2);
+    cursor: default;
+    z-index: 10;
+}
+
+.cardBlurred {
+    filter: blur(4px);
+    opacity: 0.5;
+    cursor: pointer;
+}
+
+.cardInteractive {
+    cursor: pointer;
+}
+
+/* Call to Action Area */
+.ctaContainer {
+    margin-top: 3rem;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.ctaButton {
+    background: #e63935;
+    color: white;
+    padding: 1rem 3rem;
+    border-radius: 50px;
+    font-family: 'MADE TOMMY', sans-serif;
+    font-weight: 700;
+    font-size: 1.1rem;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(230, 57, 53, 0.4);
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.ctaButton:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(230, 57, 53, 0.6);
+    background: #ff4d49;
+}
+
+/* Content Typography */
+.packageName {
+    font-family: 'MADE TOMMY', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 0.5rem;
+}
+
+.price {
+    font-family: 'MADE TOMMY', sans-serif;
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #fff;
+    display: flex;
+    align-items: baseline;
+    gap: 0.25rem;
+    margin-bottom: 1.5rem;
+}
+
+.currency {
+    font-size: 1.5rem;
+}
+
+.vat {
+    font-size: 0.875rem;
+    color: #b3b3b3;
+    font-weight: 400;
+}
+
+.featuresList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.featureItem {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    color: #e0e0e0;
+    font-size: 0.95rem;
+    line-height: 1.4;
+}
+
+.checkIcon {
+    color: #e63935;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.divider {
+    height: 1px;
+    background: rgba(255, 255, 255, 0.1);
+    margin: 1.5rem 0;
+}
+
+.upgradeArrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    color: #e63935;
+}
+
+@media (max-width: 1024px) {
+    .upgradeArrow {
+        transform: rotate(90deg);
+        padding: 1rem;
+    }
+}
+
+.glowEffect {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: radial-gradient(circle at 50% -20%, rgba(230, 57, 53, 0.15), transparent 70%);
+    pointer-events: none;
+}

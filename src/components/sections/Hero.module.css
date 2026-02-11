@@ -1,0 +1,142 @@
+.heroSection {
+    position: relative;
+    min-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 120px 0 60px;
+    overflow: hidden;
+}
+
+.heroContent {
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+    position: relative;
+    z-index: 10;
+}
+
+.headlineContainer {
+    overflow: hidden;
+    margin-bottom: var(--space-6);
+}
+
+.headline {
+    font-size: 64px;
+    line-height: 1.1;
+    font-weight: 800;
+    letter-spacing: -2px;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.highlight {
+    position: relative;
+    color: transparent;
+    background-clip: text;
+    -webkit-background-clip: text;
+    background-image: linear-gradient(90deg, #fff 0%, #fff 40%, rgba(255, 255, 255, 0.4) 50%, #fff 60%, #fff 100%);
+    background-size: 200% auto;
+    animation: shimmer 5s infinite;
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -200% center;
+    }
+
+    20% {
+        background-position: 200% center;
+    }
+
+    100% {
+        background-position: 200% center;
+    }
+}
+
+.subcopy {
+    font-size: 20px;
+    line-height: 1.6;
+    color: var(--text-secondary);
+    max-width: 600px;
+    margin: 0 auto var(--space-8);
+}
+
+.ctaGroup {
+    display: flex;
+    gap: var(--space-4);
+    justify-content: center;
+    margin-bottom: var(--space-12);
+}
+
+.primaryCta {
+    background-color: var(--accent-primary);
+    color: white;
+    padding: 16px 32px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.primaryCta:hover {
+    transform: translateY(-2px);
+    background-color: var(--accent-hover);
+}
+
+.secondaryCta {
+    background-color: rgba(255, 255, 255, 0.05);
+    color: var(--text-primary);
+    padding: 16px 32px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: background-color 0.2s;
+}
+
+.secondaryCta:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.statusBar {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: 6px 12px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    margin-bottom: var(--space-6);
+}
+
+.statusDot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #10B981;
+    /* Success Green */
+    box-shadow: 0 0 10px rgba(16, 185, 129, 0.4);
+}
+
+.statusText {
+    font-size: 13px;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+/* Scanline Effect */
+.scanline {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+    opacity: 0.5;
+    pointer-events: none;
+    z-index: 5;
+}

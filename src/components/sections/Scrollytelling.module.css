@@ -1,0 +1,118 @@
+.scrollySection {
+    position: relative;
+    padding: var(--space-32) 0;
+}
+
+.stickyContainer {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-12);
+    align-items: start;
+}
+
+.narrativeSide {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    z-index: 2;
+    margin-bottom: 20vh;
+    /* Add some buffer at bottom */
+}
+
+/* The visual side sticks to the viewport while narrative scrolls */
+.visualSide {
+    position: sticky;
+    top: 15vh;
+    height: 70vh;
+    background: var(--surface-light);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+.visualPanel {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Transitions handled by framer-motion */
+}
+
+/* Each step has a height to enable scrolling */
+.stepTrigger {
+    height: 80vh;
+    /* Space to scroll */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: var(--space-4) 0;
+    opacity: 0.3;
+    transition: opacity 0.3s;
+}
+
+.stepTrigger.active {
+    opacity: 1;
+}
+
+.stepCount {
+    font-size: 12px;
+    font-family: monospace;
+    color: var(--accent-primary);
+    margin-bottom: var(--space-2);
+    display: block;
+}
+
+.stepTitle {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: var(--space-4);
+}
+
+.stepDescription {
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--text-secondary);
+    max-width: 450px;
+}
+
+/* Progress Line/Indicator */
+.progressContainer {
+    position: absolute;
+    left: -24px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--border-subtle);
+}
+
+.progressBar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: var(--accent-primary);
+    transform-origin: top;
+}
+
+@media (max-width: 768px) {
+    .stickyContainer {
+        grid-template-columns: 1fr;
+        position: relative;
+        height: auto;
+    }
+
+    .visualSide {
+        display: none;
+    }
+
+    .stepTrigger {
+        height: auto;
+        padding: var(--space-8) 0;
+        opacity: 1;
+    }
+}
