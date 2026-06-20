@@ -30,6 +30,13 @@ interface OrderItem { codice_l2f: string | null; nome: string | null; imballo: s
 const MARCA_GESTIONALE = "LDF";
 
 /**
+ * Casella magazzino che riceve la notifica ordine + Excel.
+ * Dominio diverso dal mittente (l2f.it) di proposito: una mail @l2f.it -> @l2f.it
+ * inviata da Resend viene filtrata come spoofing e finisce in spam.
+ */
+const ORDINE_NOTIFY_TO = "ordini@centroricambiautosrl.it";
+
+/**
  * Genera l'Excel d'importazione, una riga per articolo.
  * Colonne (nell'ordine atteso dal gestionale): Marca | Articolo | Quantità | Prezzo unitario.
  * Riga 1 = intestazione; i dati partono dalla riga 2 (impostare "Inizia dalla riga 2" nell'import).
@@ -88,7 +95,7 @@ Deno.serve(async (req: Request) => {
       return resp.ok;
     }
 
-    // 1) Notifica interna (magazzino) a info@l2f.it CON l'Excel d'importazione allegato.
+    // 1) Notifica magazzino CON l'Excel d'importazione allegato.
     const intestazione = `<p style="margin:0 0 16px"><strong style="color:#fff">${off.ragione_sociale}</strong>${off.codice_cliente ? " · " + off.codice_cliente : ""}${off.citta ? " — " + off.citta : ""}<br/>${off.email ?? ""}${off.telefono ? " · " + off.telefono : ""}${off.piva ? "<br/>P.IVA " + off.piva : ""}</p>`;
     const internalHtml = l2fEmail({ brand: "AUTOMOTIVE", pre: `Nuovo ordine ${numero}`, heading: `Nuovo ordine ${numero}`, body: intestazione + tableHtml + totaliHtml + `<p style="margin:16px 0 0;font-size:13px;color:#8a93a3">In allegato l'Excel da importare nel gestionale.</p>` });
     const safeNum = String(numero).replace(/[^A-Za-z0-9_-]/g, "");
@@ -102,7 +109,7 @@ Deno.serve(async (req: Request) => {
     }
     const internalOk = await sendEmail({
       from: FROM,
-      to: ["info@l2f.it"],
+      to: [ORDINE_NOTIFY_TO],
       reply_to: off.email ? [off.email] : undefined,
       subject: `Nuovo ordine ${numero} — ${off.ragione_sociale}`,
       html: internalHtml,
