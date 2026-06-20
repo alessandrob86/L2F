@@ -1,7 +1,9 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "jsr:@supabase/supabase-js@2";
-// SheetJS viene caricato con import() dinamico dentro l'handler (build ESM ufficiale per Deno),
-// così un eventuale problema della libreria non impedisce alla funzione di avviarsi.
+// SheetJS via npm: (host consentito dal bundler Supabase). cdn.sheetjs.com è bloccato
+// dal bundler, e l'import() dinamico non è supportato dal runtime edge: entrambi
+// facevano fallire la generazione dell'Excel.
+import * as XLSX from "npm:xlsx@0.18.5";
 
 const cors = { "Access-Control-Allow-Origin": "*", "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type" };
 function json(body: unknown, status = 200): Response { return new Response(JSON.stringify(body), { status, headers: { ...cors, "Content-Type": "application/json" } }); }
@@ -42,8 +44,7 @@ const ORDINE_NOTIFY_TO = "ordini@centroricambiautosrl.it";
  * Riga 1 = intestazione; i dati partono dalla riga 2 (impostare "Inizia dalla riga 2" nell'import).
  * Quantità e Prezzo unitario sono celle numeriche; il prezzo è il NETTO, IVA esclusa.
  */
-// deno-lint-ignore no-explicit-any
-function buildOrderXlsx(XLSX: any, items: OrderItem[]): string {
+function buildOrderXlsx(items: OrderItem[]): string {
   const header = ["Marca", "Articolo", "Quantità", "Prezzo unitario"];
   const rows = items.map((it) => [MARCA_GESTIONALE, it.codice_l2f ?? "", Number(it.quantita), Number(it.prezzo_unitario)]);
   const ws = XLSX.utils.aoa_to_sheet([header, ...rows]);
@@ -99,11 +100,10 @@ Deno.serve(async (req: Request) => {
     const intestazione = `<p style="margin:0 0 16px"><strong style="color:#fff">${off.ragione_sociale}</strong>${off.codice_cliente ? " · " + off.codice_cliente : ""}${off.citta ? " — " + off.citta : ""}<br/>${off.email ?? ""}${off.telefono ? " · " + off.telefono : ""}${off.piva ? "<br/>P.IVA " + off.piva : ""}</p>`;
     const internalHtml = l2fEmail({ brand: "AUTOMOTIVE", pre: `Nuovo ordine ${numero}`, heading: `Nuovo ordine ${numero}`, body: intestazione + tableHtml + totaliHtml + `<p style="margin:16px 0 0;font-size:13px;color:#8a93a3">In allegato l'Excel da importare nel gestionale.</p>` });
     const safeNum = String(numero).replace(/[^A-Za-z0-9_-]/g, "");
-    // Genera l'Excel; se SheetJS non si carica, l'email parte comunque senza allegato.
+    // Genera l'Excel; un eventuale errore non blocca l'email (parte senza allegato).
     let xlsxB64: string | null = null;
     try {
-      const XLSX = await import("https://cdn.sheetjs.com/xlsx-0.20.3/package/xlsx.mjs");
-      xlsxB64 = buildOrderXlsx(XLSX, items);
+      xlsxB64 = buildOrderXlsx(items);
     } catch (e) {
       console.error("Generazione Excel fallita:", e);
     }
