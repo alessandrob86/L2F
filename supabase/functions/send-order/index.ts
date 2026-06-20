@@ -32,13 +32,14 @@ const MARCA_GESTIONALE = "LDF";
 /**
  * Genera l'Excel d'importazione, una riga per articolo.
  * Colonne (nell'ordine atteso dal gestionale): Marca | Articolo | Quantità | Prezzo unitario.
- * Nessuna riga d'intestazione: i dati partono dalla riga 1 (coerente con "Inizia dalla riga 1").
+ * Riga 1 = intestazione; i dati partono dalla riga 2 (impostare "Inizia dalla riga 2" nell'import).
  * Quantità e Prezzo unitario sono celle numeriche; il prezzo è il NETTO, IVA esclusa.
  */
 // deno-lint-ignore no-explicit-any
 function buildOrderXlsx(XLSX: any, items: OrderItem[]): string {
+  const header = ["Marca", "Articolo", "Quantità", "Prezzo unitario"];
   const rows = items.map((it) => [MARCA_GESTIONALE, it.codice_l2f ?? "", Number(it.quantita), Number(it.prezzo_unitario)]);
-  const ws = XLSX.utils.aoa_to_sheet(rows);
+  const ws = XLSX.utils.aoa_to_sheet([header, ...rows]);
   ws["!cols"] = [{ wch: 10 }, { wch: 22 }, { wch: 10 }, { wch: 14 }];
   const wb = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb, ws, "Ordine");
