@@ -21,6 +21,61 @@
     opacity: 0.3;
 }
 
+/* ---- Flow field: curve a cascata + comete ---- */
+.flowField {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* La cometa è un tratto corto (60/1000 del percorso) che scorre
+   lungo la curva; il resto della dasharray è vuoto. */
+.comet {
+    stroke-dasharray: 60 940;
+    stroke-dashoffset: 60;
+    opacity: 0;
+    animation-name: cometTravel;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    will-change: stroke-dashoffset, opacity;
+}
+
+.cometAccent {
+    filter: drop-shadow(0 0 6px rgba(224, 49, 47, 0.6));
+}
+
+@keyframes cometTravel {
+    0% {
+        stroke-dashoffset: 60;
+        opacity: 0;
+    }
+
+    8% {
+        opacity: 1;
+    }
+
+    85% {
+        opacity: 1;
+    }
+
+    100% {
+        stroke-dashoffset: -1000;
+        opacity: 0;
+    }
+}
+
+/* Bagliore rosso di profondità */
+.glowBottom {
+    position: absolute;
+    width: 70vw;
+    height: 45vh;
+    left: 15vw;
+    bottom: -22vh;
+    background: radial-gradient(ellipse at center, rgba(195, 35, 39, 0.18), transparent 65%);
+    filter: blur(30px);
+}
+
 .noiseOverlay {
     position: absolute;
     inset: 0;
@@ -33,4 +88,13 @@
     position: absolute;
     inset: 0;
     background: radial-gradient(circle at 50% 50%, transparent 0%, rgba(0, 0, 0, 0.6) 100%);
+}
+
+/* Accessibilità: niente moto */
+@media (prefers-reduced-motion: reduce) {
+    .comet {
+        animation: none;
+        opacity: 0.25;
+        stroke-dasharray: none;
+    }
 }

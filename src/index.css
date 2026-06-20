@@ -1,35 +1,92 @@
+/* ============================================
+   MADE TOMMY — font proprietario L2F
+   NOTA LICENZA: file "PERSONAL USE" — acquistare
+   licenza commerciale prima del go-live.
+   ============================================ */
+@font-face {
+  font-family: 'MADE TOMMY';
+  src: url('./assets/fonts/made-tommy-300.woff2') format('woff2');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'MADE TOMMY';
+  src: url('./assets/fonts/made-tommy-400.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'MADE TOMMY';
+  src: url('./assets/fonts/made-tommy-500.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'MADE TOMMY';
+  src: url('./assets/fonts/made-tommy-700.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'MADE TOMMY';
+  src: url('./assets/fonts/made-tommy-800.woff2') format('woff2');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'MADE TOMMY';
+  src: url('./assets/fonts/made-tommy-900.woff2') format('woff2');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
-  /* Palette - Mandatory */
+  /* Palette — campionata dai loghi ufficiali L2F */
   --bg-dark: #0B0C10;
   --surface-dark: #12141A;
   --surface-light: #161A22;
-  --accent-primary: #DF3B38;
-  --accent-hover: #c93330;
-  
+  --accent-primary: #C32327;  /* rosso logo L2F */
+  --accent-hover: #E0312F;    /* schiarito per hover su dark */
+  --brand-gray: #ACACAC;      /* grigio logo L2F */
+
   /* Text */
   --text-primary: #FFFFFF;
-  --text-secondary: #9CA3AF; /* Cool gray */
-  --text-tertiary: #6B7280;
-  
+  --text-secondary: #9CA3AF;
+  --text-tertiary: #8A93A3;   /* alzato per contrasto AA su dark */
+
   /* Borders & Dividers */
   --border-subtle: rgba(255, 255, 255, 0.08);
-  --border-active: rgba(223, 59, 56, 0.5);
-  
+  --border-active: rgba(195, 35, 39, 0.5);
+
   /* Spacing Scale (4px base) */
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;
   --space-4: 16px;
+  --space-5: 20px;
   --space-6: 24px;
   --space-8: 32px;
   --space-12: 48px;
   --space-16: 64px;
   --space-24: 96px;
   --space-32: 128px;
-  
-  /* Typography */
-  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
-  
+
+  /* Typography — MADE TOMMY ovunque, pesi diversi per gerarchia */
+  --font-sans: 'MADE TOMMY', system-ui, -apple-system, sans-serif;
+  --font-display: 'MADE TOMMY', system-ui, -apple-system, sans-serif;
+
+  /* Scala fluida (ratio ~1.33) */
+  --text-display: clamp(2.5rem, 6.5vw, 4rem);     /* hero h1 */
+  --text-h2: clamp(1.9rem, 4.5vw, 2.75rem);       /* titoli sezione */
+  --text-h3: clamp(1.35rem, 3vw, 1.75rem);
+  --text-body-lg: clamp(1.05rem, 1.6vw, 1.25rem);
+
   /* Animation Easing - Signature */
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-click: cubic-bezier(0.25, 1, 0.5, 1);
@@ -41,14 +98,31 @@
   }
 }
 
+/* Reset box-sizing: width:100% + padding non devono sforare il contenitore */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   background-color: var(--bg-dark);
   color: var(--text-primary);
   font-family: var(--font-sans);
+  font-weight: 400;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
 }
 
 /* Custom Scrollbar */

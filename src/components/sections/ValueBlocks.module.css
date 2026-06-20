@@ -20,7 +20,7 @@
 }
 
 .heading {
-    font-size: 42px;
+    font-size: var(--text-h2);
     font-weight: 700;
     color: var(--text-primary);
     margin-bottom: var(--space-4);
@@ -55,16 +55,18 @@
     border-color: rgba(255, 255, 255, 0.1);
 }
 
+/* Tile "a foglia" come il set icone ufficiale L2F */
 .iconWrapper {
-    width: 48px;
-    height: 48px;
-    background: rgba(223, 59, 56, 0.1);
-    border-radius: 8px;
+    width: 52px;
+    height: 52px;
+    background: rgba(195, 35, 39, 0.08);
+    border: 1.5px solid var(--accent-primary);
+    border-radius: 18px 18px 18px 2px;
     display: flex;
     align-items: center;
     justify-content: center;
     margin-bottom: var(--space-6);
-    color: var(--accent-primary);
+    color: var(--accent-hover);
 }
 
 .cardTitle {

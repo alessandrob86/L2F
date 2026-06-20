@@ -9,21 +9,29 @@ Il font distintivo è **MADE TOMMY**.
 - **Headings:** Bold / ExtraBold. Letter-spacing leggermente ampio.
 - **Body:** Regular / Light.
 
-## 2. Palette Colori (Estratta da UI)
+## 2. Palette Colori (campionata dai loghi ufficiali — PDF "L2F - Loghi®")
 
 ### Backgrounds (Dark Depth)
-- **Surface Dark:** `#050505` (Sfondo principale)
-- **Surface Light:** `#1a1a1a` (Elementi in rilievo)
-- **Gradient Base:** Da `#0a0a0a` a `#141414`.
+- **Background:** `#0B0C10` (Sfondo principale)
+- **Surface Dark:** `#12141A`
+- **Surface Light:** `#161A22`
 
-### Accenti (L2F Red)
-- **Primary Red:** `#e63935` (Brand Color)
-- **Hover Red:** `#ff4d49`
-- **Linear Gradient:** `#e63935` -> `#c22b27` (per profondità bottoni)
+### Accenti (L2F Red — dal logo)
+- **Primary Red:** `#C32327` (rosso ufficiale logo)
+- **Hover Red:** `#E0312F` (schiarito per hover su dark)
+- **Brand Gray:** `#ACACAC` (grigio logo)
 
 ### Testi
 - **White:** `#ffffff`
-- **Muted:** `#b3b3b3`
+- **Secondary:** `#9CA3AF`
+- **Tertiary:** `#8A93A3` (minimo per contrasto AA su dark)
+
+> I token CSS in `src/index.css` sono la fonte di verità (`--accent-primary`, ecc.).
+
+## Nota licenza font
+I file MADE TOMMY attualmente in `src/assets/fonts/` derivano dalla versione
+**PERSONAL USE**: prima del go-live va acquistata la licenza commerciale
+(MadeType / creativemarket).
 
 ## 3. Filosofia delle Animazioni
 **Non esistono preset.** Ogni animazione deve essere studiata per elevare l'esperienza utente.

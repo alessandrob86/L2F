@@ -51,11 +51,11 @@ const ResiMockup = () => (
 const HomeFlexMockup = () => (
     <div style={{ width: '100%', maxWidth: '300px', background: '#12141A', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '16px', padding: '8px', position: 'relative' }}>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4px' }}>
-            <div style={{ padding: '12px', borderRadius: '10px', textAlign: 'center', color: '#6B7280' }}>
+            <div style={{ padding: '12px', borderRadius: '10px', textAlign: 'center', color: '#8A93A3' }}>
                 <div style={{ fontWeight: 'bold', marginBottom: '4px' }}>HOME</div>
                 <div style={{ fontSize: '12px' }}>3%</div>
             </div>
-            <div style={{ background: '#3B82F6', padding: '12px', borderRadius: '10px', textAlign: 'center', color: '#fff', boxShadow: '0 4px 12px rgba(59, 130, 246, 0.4)' }}>
+            <div style={{ background: 'var(--accent-primary)', padding: '12px', borderRadius: '10px', textAlign: 'center', color: '#fff', boxShadow: '0 4px 12px rgba(195, 35, 39, 0.4)' }}>
                 <div style={{ fontWeight: 'bold', marginBottom: '4px' }}>FLEX</div>
                 <div style={{ fontSize: '12px' }}>5%</div>
             </div>
@@ -64,7 +64,7 @@ const HomeFlexMockup = () => (
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.8 }}
-            style={{ position: 'absolute', top: '-12px', right: '20%', background: '#F59E0B', color: '#000', fontSize: '10px', fontWeight: 'bold', padding: '2px 8px', borderRadius: '4px' }}
+            style={{ position: 'absolute', top: '-12px', right: '20%', background: 'var(--accent-hover)', color: '#fff', fontSize: '10px', fontWeight: 'bold', padding: '2px 8px', borderRadius: '4px' }}
         >
             UPGRADE
         </motion.div>
@@ -73,18 +73,18 @@ const HomeFlexMockup = () => (
 
 const BoosterMockup = () => (
     <div style={{ width: '100%', maxWidth: '340px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
-        <div style={{ background: 'rgba(59, 130, 246, 0.1)', border: '1px solid rgba(59, 130, 246, 0.3)', padding: '16px', borderRadius: '12px', textAlign: 'center' }}>
-            <Database size={24} color="#3B82F6" style={{ marginBottom: '8px' }} />
+        <div style={{ background: 'rgba(195, 35, 39, 0.08)', border: '1px solid rgba(195, 35, 39, 0.35)', padding: '16px', borderRadius: '12px', textAlign: 'center' }}>
+            <Database size={24} color="var(--accent-hover)" style={{ marginBottom: '8px' }} />
             <div style={{ fontSize: '13px', fontWeight: 'bold', color: '#fff' }}>TechData</div>
             <div style={{ fontSize: '10px', color: '#9CA3AF' }}>Banca Dati</div>
         </div>
-        <div style={{ background: 'rgba(236, 72, 153, 0.1)', border: '1px solid rgba(236, 72, 153, 0.3)', padding: '16px', borderRadius: '12px', textAlign: 'center' }}>
-            <TrendingUp size={24} color="#EC4899" style={{ marginBottom: '8px' }} />
+        <div style={{ background: 'rgba(255, 255, 255, 0.04)', border: '1px solid rgba(255, 255, 255, 0.15)', padding: '16px', borderRadius: '12px', textAlign: 'center' }}>
+            <TrendingUp size={24} color="#ACACAC" style={{ marginBottom: '8px' }} />
             <div style={{ fontSize: '13px', fontWeight: 'bold', color: '#fff' }}>Marketing</div>
             <div style={{ fontSize: '10px', color: '#9CA3AF' }}>Supporto</div>
         </div>
-        <div style={{ gridColumn: 'span 2', background: 'linear-gradient(90deg, #3B82F6 0%, #EC4899 100%)', padding: '12px', borderRadius: '8px', textAlign: 'center', marginTop: '4px', opacity: 0.9 }}>
-            <div style={{ color: '#fff', fontSize: '12px', fontWeight: 'bold' }}>⚡ Combo Consigliata</div>
+        <div style={{ gridColumn: 'span 2', background: 'var(--accent-primary)', padding: '12px', borderRadius: '8px', textAlign: 'center', marginTop: '4px' }}>
+            <div style={{ color: '#fff', fontSize: '12px', fontWeight: 'bold' }}>Combo consigliata</div>
         </div>
     </div>
 );
@@ -96,7 +96,7 @@ const steps = [
         description: 'Con L2F, gli acquisti generano cashback: 3% con HOME e 5% con FLEX. È un vantaggio concreto legato all’utilizzo, non una promo a tempo.',
         microNote: 'Il cashback è un bonus legato agli acquisti.',
         icon: <Coins size={32} />,
-        color: '#10B981',
+        color: '#10B981', /* verde semantico: denaro maturato */
         mockup: <CashbackMockup />
     },
     {
@@ -105,7 +105,7 @@ const steps = [
         description: 'Per le officine L2F in regola, il Reso a Vista consente la presa in carico immediata in filiale degli articoli difettosi, evitando pratiche inutili.',
         microNote: 'Non vale per errori di ordinazione. Esclusi alcuni codici.',
         icon: <RotateCcw size={32} />,
-        color: '#EF4444',
+        color: '#C32327',
         mockup: <ResiMockup />
     },
     {
@@ -114,16 +114,16 @@ const steps = [
         description: 'Si parte da HOME (base) e si passa a FLEX quando aggiungi un servizio. Niente pacchetti confusi: o HOME o FLEX, punto.',
         microNote: 'HOME è la porta d’ingresso; FLEX è la crescita.',
         icon: <Layers size={32} />,
-        color: '#3B82F6',
+        color: '#C32327',
         mockup: <HomeFlexMockup />
     },
     {
         id: 4,
-        title: 'Booster Tech & Mkt',
+        title: 'Booster Tech & Marketing',
         description: 'Con FLEX puoi aggiungere i booster: TechData (banca dati) e Marketing (supporto personalizzato).',
         microNote: 'La combo più forte per massimizzare il valore.',
         icon: <Rocket size={32} />,
-        color: '#7C3AED',
+        color: '#C32327',
         mockup: <BoosterMockup />
     },
 ];
@@ -133,7 +133,7 @@ export const Scrollytelling = () => {
     const [activeStep, setActiveStep] = useState(0);
 
     return (
-        <section className={styles.scrollySection} ref={containerRef}>
+        <section className={styles.scrollySection} ref={containerRef} id="come-funziona">
             <div className="container">
                 <div className={styles.stickyContainer}>
 
@@ -184,7 +184,7 @@ export const Scrollytelling = () => {
                                     }}>
                                         {steps[activeStep].icon}
                                         <span style={{ fontSize: '14px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '1px' }}>
-                                            {steps[activeStep].title} Mode
+                                            {steps[activeStep].title}
                                         </span>
                                     </div>
 
@@ -202,7 +202,17 @@ export const Scrollytelling = () => {
     );
 };
 
-const Step = ({ step, index, onInView, isActive }: { step: any, index: number, onInView: () => void, isActive: boolean }) => {
+interface StepData {
+    id: number;
+    title: string;
+    description: string;
+    microNote?: string;
+    icon: React.ReactNode;
+    color: string;
+    mockup: React.ReactNode;
+}
+
+const Step = ({ step, index, onInView, isActive }: { step: StepData, index: number, onInView: () => void, isActive: boolean }) => {
     return (
         <motion.div
             className={`${styles.stepTrigger} ${isActive ? styles.active : ''}`}
@@ -213,10 +223,11 @@ const Step = ({ step, index, onInView, isActive }: { step: any, index: number, o
             <h3 className={styles.stepTitle}>{step.title}</h3>
             <p className={styles.stepDescription}>{step.description}</p>
             {step.microNote && (
-                <p style={{ fontSize: '12px', color: '#6B7280', marginTop: '8px', borderLeft: '2px solid rgba(255,255,255,0.1)', paddingLeft: '8px' }}>
+                <p style={{ fontSize: '13px', color: '#8A93A3', marginTop: '8px', paddingLeft: '8px' }}>
                     {step.microNote}
                 </p>
             )}
+            <div className={styles.stepMockupMobile}>{step.mockup}</div>
         </motion.div>
     );
 };

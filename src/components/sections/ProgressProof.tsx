@@ -3,10 +3,10 @@ import { motion, useInView, animate, useMotionValue, useTransform } from 'framer
 import styles from './ProgressProof.module.css';
 
 const metrics = [
-    { value: 4700, label: 'Mq di Magazzino', suffix: '' },
-    { value: 3000, label: 'Clienti Serviti', suffix: '+' },
-    { value: 450, label: 'Ordini Giornalieri', suffix: '' },
-    { value: 65000, label: 'Articoli Codificati', suffix: '' },
+    { value: 4700, label: 'm² di magazzino', suffix: '' },
+    { value: 3000, label: 'Clienti serviti', suffix: '+' },
+    { value: 450, label: 'Ordini al giorno', suffix: '' },
+    { value: 65000, label: 'Articoli a catalogo', suffix: '' },
 ];
 
 export const ProgressProof = () => {

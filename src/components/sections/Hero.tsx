@@ -8,15 +8,6 @@ const easeOutExpo: [number, number, number, number] = [0.16, 1, 0.3, 1];
 export const Hero = () => {
     return (
         <section className={styles.heroSection}>
-
-            {/* Scanline Sweep */}
-            <motion.div
-                className={styles.scanline}
-                initial={{ top: 0, opacity: 0 }}
-                animate={{ top: '100%', opacity: [0, 1, 0] }}
-                transition={{ duration: 1.5, ease: 'easeInOut', delay: 0.5 }}
-            />
-
             <div className="container">
                 <div className={styles.heroContent}>
                     {/* Status Bar */}
@@ -27,7 +18,7 @@ export const Hero = () => {
                         transition={{ duration: 0.6, ease: easeOutExpo }}
                     >
                         <div className={styles.statusDot} />
-                        <span className={styles.statusText}>Sistemi operativi: Disponibilità immediata</span>
+                        <span className={styles.statusText}>Oltre 3.000 officine e ricambisti serviti in Italia</span>
                     </motion.div>
 
                     {/* Headline */}
@@ -50,7 +41,8 @@ export const Hero = () => {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8, ease: easeOutExpo, delay: 0.3 }}
                     >
-                        Servizi, ricambi e cashback integrati in un unico sistema che si ripaga da solo.
+                        Ricambi private label, servizi e cashback in un unico sistema.
+                        Il vantaggio si misura in numeri, non in promesse.
                     </motion.p>
 
                     {/* CTAs */}
@@ -60,10 +52,16 @@ export const Hero = () => {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8, ease: easeOutExpo, delay: 0.4 }}
                     >
-                        <MagneticButton className={styles.primaryCta}>
-                            Scopri L2F <ArrowRight size={18} />
+                        <MagneticButton
+                            className={styles.primaryCta}
+                            onClick={() => document.getElementById('piani')?.scrollIntoView({ behavior: 'smooth' })}
+                        >
+                            Scopri i piani <ArrowRight size={18} aria-hidden="true" />
                         </MagneticButton>
-                        <MagneticButton className={styles.secondaryCta}>
+                        <MagneticButton
+                            className={styles.secondaryCta}
+                            onClick={() => document.getElementById('come-funziona')?.scrollIntoView({ behavior: 'smooth' })}
+                        >
                             Come funziona
                         </MagneticButton>
                     </motion.div>

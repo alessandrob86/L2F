@@ -22,3 +22,15 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Ambiente e materiali di lavoro
+.env
+.review-assets/
+.impeccable/
+.claude/
+.agent/
+*.rar
+
+# Materiali di lavoro pesanti (non servono al sito / deploy)
+_sources/
+Etichette Batterie L2F/

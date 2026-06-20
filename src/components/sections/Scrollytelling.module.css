@@ -59,15 +59,21 @@
 }
 
 .stepCount {
-    font-size: 12px;
-    font-family: monospace;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
     color: var(--accent-primary);
     margin-bottom: var(--space-2);
     display: block;
 }
 
+/* Mockup inline su mobile (il pannello sticky è nascosto) */
+.stepMockupMobile {
+    display: none;
+}
+
 .stepTitle {
-    font-size: 32px;
+    font-size: clamp(1.5rem, 3.5vw, 2rem);
     font-weight: 700;
     color: var(--text-primary);
     margin-bottom: var(--space-4);
@@ -114,5 +120,19 @@
         height: auto;
         padding: var(--space-8) 0;
         opacity: 1;
+    }
+
+    .stepMockupMobile {
+        display: flex;
+        justify-content: center;
+        margin-top: var(--space-6);
+        padding: var(--space-6);
+        background: var(--surface-light);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 12px;
+    }
+
+    .progressContainer {
+        display: none;
     }
 }

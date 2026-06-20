@@ -22,36 +22,16 @@
 }
 
 .headline {
-    font-size: 64px;
-    line-height: 1.1;
+    font-size: var(--text-display);
+    line-height: 1.15;
     font-weight: 800;
-    letter-spacing: -2px;
+    letter-spacing: -0.01em;
     color: var(--text-primary);
     margin: 0;
 }
 
 .highlight {
-    position: relative;
-    color: transparent;
-    background-clip: text;
-    -webkit-background-clip: text;
-    background-image: linear-gradient(90deg, #fff 0%, #fff 40%, rgba(255, 255, 255, 0.4) 50%, #fff 60%, #fff 100%);
-    background-size: 200% auto;
-    animation: shimmer 5s infinite;
-}
-
-@keyframes shimmer {
-    0% {
-        background-position: -200% center;
-    }
-
-    20% {
-        background-position: 200% center;
-    }
-
-    100% {
-        background-position: 200% center;
-    }
+    color: var(--accent-hover);
 }
 
 .subcopy {
@@ -117,26 +97,12 @@
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background-color: #10B981;
-    /* Success Green */
-    box-shadow: 0 0 10px rgba(16, 185, 129, 0.4);
+    background-color: var(--accent-hover);
+    box-shadow: 0 0 10px rgba(224, 49, 47, 0.5);
 }
 
 .statusText {
     font-size: 13px;
     color: var(--text-secondary);
     font-weight: 500;
-}
-
-/* Scanline Effect */
-.scanline {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
-    opacity: 0.5;
-    pointer-events: none;
-    z-index: 5;
 }

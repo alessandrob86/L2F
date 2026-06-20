@@ -96,6 +96,7 @@
 }
 
 .ctaButton {
+    display: inline-block;
     background: var(--text-primary);
     color: var(--bg-dark);
     padding: 12px 24px;

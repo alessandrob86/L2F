@@ -1,0 +1,667 @@
+.page {
+    padding-top: 120px;
+    padding-bottom: var(--space-32);
+    min-height: 80vh;
+    overflow-x: clip;
+}
+
+.header {
+    margin-bottom: var(--space-12);
+}
+
+.logo {
+    height: 44px;
+    margin-bottom: var(--space-4);
+}
+
+.title {
+    font-size: var(--text-display);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin: 0 0 var(--space-3);
+}
+
+.subtitle {
+    color: var(--text-secondary);
+    font-size: var(--text-body-lg);
+    font-weight: 300;
+    max-width: 60ch;
+    margin: 0;
+}
+
+.subtitle strong {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+/* ---- Ricerca globale ---- */
+.searchRow {
+    margin-bottom: var(--space-8);
+}
+
+/* ---- Toolbar vista prodotti: indietro + filtri famiglia ---- */
+.toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    align-items: center;
+    margin-bottom: var(--space-8);
+}
+
+.backCats {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    color: var(--text-secondary);
+    font-size: 14px;
+    font-weight: 600;
+    padding: 8px 14px;
+    border-radius: 8px;
+    border: 1px solid var(--border-subtle);
+    transition: color 0.2s, border-color 0.2s;
+}
+
+.backCats:hover {
+    color: var(--text-primary);
+    border-color: var(--brand-gray);
+}
+
+/* Nota tecnologie (batterie) */
+.familyNote {
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--text-secondary);
+    max-width: 80ch;
+    margin: 0 0 var(--space-6);
+}
+
+.familyNote strong {
+    color: var(--accent-hover);
+    font-weight: 700;
+}
+
+/* ---- Filtri a faccette (Linea / Amperaggio…) ---- */
+.facets {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    margin-bottom: var(--space-6);
+}
+
+.facetRow {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+.subLabel {
+    flex-shrink: 0;
+    min-width: 92px;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-tertiary);
+}
+
+.subChip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    border-radius: 999px;
+    border: 1px solid var(--border-subtle);
+    background: var(--surface-dark);
+    color: var(--text-secondary);
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.2s var(--ease-out-expo);
+}
+
+.subChip:hover {
+    color: var(--text-primary);
+    border-color: var(--brand-gray);
+}
+
+.subChipActive,
+.subChipActive:hover {
+    background: var(--accent-primary);
+    border-color: var(--accent-primary);
+    color: #fff;
+}
+
+/* ---- Etichetta slider temperatura colore (LED) ---- */
+.kVal {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-secondary);
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+}
+
+.kCount {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 12px;
+    color: var(--text-tertiary);
+}
+
+.kCountZero {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 12px;
+    color: var(--accent-hover);
+}
+
+.kReset {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: var(--surface-light);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-secondary);
+    font-size: 14px;
+    line-height: 1;
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.kReset:hover {
+    background: var(--accent-primary);
+    border-color: var(--accent-primary);
+    color: #fff;
+}
+
+/* ---- Combobox specifica (lubrificanti) ---- */
+.combobox {
+    position: relative;
+    flex: 1 1 360px;
+    max-width: 460px;
+}
+
+.specInput {
+    width: 100%;
+    padding: 9px 34px 9px 14px;
+    border-radius: 999px;
+    border: 1px solid var(--border-subtle);
+    background: var(--surface-dark);
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 14px;
+    transition: border-color 0.2s;
+}
+
+.specInput::placeholder {
+    color: var(--text-tertiary);
+}
+
+.specInput:focus {
+    outline: none;
+    border-color: var(--accent-primary);
+}
+
+.specClear {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: var(--surface-light);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-secondary);
+    font-size: 16px;
+    line-height: 1;
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.specClear:hover {
+    background: var(--accent-primary);
+    border-color: var(--accent-primary);
+    color: #fff;
+}
+
+.specMenu {
+    position: absolute;
+    z-index: 20;
+    top: calc(100% + 6px);
+    left: 0;
+    right: 0;
+    margin: 0;
+    padding: 6px;
+    list-style: none;
+    background: var(--surface-light);
+    border: 1px solid var(--border-subtle);
+    border-radius: 10px;
+    box-shadow: 0 20px 50px -12px rgba(0, 0, 0, 0.7);
+    max-height: 280px;
+    overflow-y: auto;
+}
+
+.specOption {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 8px 12px;
+    border-radius: 6px;
+    color: var(--text-secondary);
+    font-size: 13px;
+    font-variant-numeric: tabular-nums;
+    transition: background 0.15s, color 0.15s;
+}
+
+.specOption:hover {
+    background: var(--surface-dark);
+    color: var(--text-primary);
+}
+
+
+.families {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+}
+
+.chip {
+    padding: 8px 16px;
+    border-radius: 999px;
+    border: 1px solid var(--border-subtle);
+    background: var(--surface-dark);
+    color: var(--text-secondary);
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s var(--ease-out-expo);
+}
+
+.chip:hover {
+    color: var(--text-primary);
+    border-color: var(--brand-gray);
+}
+
+.chipActive {
+    background: var(--accent-primary);
+    border-color: var(--accent-primary);
+    color: #fff;
+}
+
+.chipActive:hover {
+    border-color: var(--accent-primary);
+    color: #fff;
+}
+
+.searchBox {
+    position: relative;
+    display: flex;
+    align-items: center;
+    flex: 1 1 260px;
+    max-width: 360px;
+}
+
+.searchIcon {
+    position: absolute;
+    left: 14px;
+    color: var(--text-tertiary);
+    pointer-events: none;
+}
+
+.searchInput {
+    width: 100%;
+    padding: 11px 14px 11px 42px;
+    border-radius: 8px;
+    border: 1px solid var(--border-subtle);
+    background: var(--surface-dark);
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 15px;
+    transition: border-color 0.2s;
+}
+
+.searchInput::placeholder {
+    color: var(--text-tertiary);
+}
+
+.searchInput:focus {
+    outline: none;
+    border-color: var(--accent-primary);
+}
+
+.count {
+    color: var(--text-tertiary);
+    font-size: 14px;
+    margin-bottom: var(--space-4);
+}
+
+/* ---- Griglia prodotti ---- */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: var(--space-4);
+}
+
+.card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background: var(--surface-light);
+    border: 1px solid var(--border-subtle);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: border-color 0.25s, transform 0.25s var(--ease-out-expo);
+}
+
+/* Quick-cart: appare in hover sulla card (griglia), sempre visibile a righe */
+.quickCart {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 3;
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 11px;
+    background: var(--accent-primary);
+    color: #fff;
+    cursor: pointer;
+    opacity: 0;
+    transform: translateY(-6px) scale(0.95);
+    transition: opacity 0.18s ease, transform 0.18s ease, background 0.2s ease;
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.45);
+}
+.card:hover .quickCart,
+.quickCart:focus-visible {
+    opacity: 1;
+    transform: none;
+}
+.quickCart:hover { background: var(--accent-hover); }
+@media (hover: none) {
+    .quickCart { opacity: 1; transform: none; }
+}
+
+/* Barra risultati: conteggio + toggle vista */
+.resultsBar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    margin-bottom: var(--space-4);
+}
+.viewToggle {
+    display: inline-flex;
+    gap: 4px;
+    padding: 4px;
+    border: 1px solid var(--border-subtle);
+    border-radius: 10px;
+    background: var(--surface-dark);
+    flex-shrink: 0;
+}
+.viewBtn {
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 30px;
+    border-radius: 7px;
+    color: var(--text-tertiary);
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+.viewBtn:hover { color: var(--text-primary); }
+.viewBtnOn { background: var(--accent-primary); color: #fff; }
+.viewBtnOn:hover { color: #fff; }
+
+/* ---- Vista a righe ---- */
+.rowsList {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+}
+.cardRow {
+    flex-direction: row;
+    align-items: stretch;
+}
+.cardRow .thumb {
+    width: clamp(150px, 22%, 230px);
+    flex-shrink: 0;
+    aspect-ratio: auto;
+    border-bottom: none;
+    border-right: 1px solid var(--border-subtle);
+}
+.cardRow .cardBody {
+    padding: var(--space-5) var(--space-6);
+}
+.cardRow .priceRow {
+    margin-top: var(--space-3);
+}
+.cardRow .quickCart {
+    position: static;
+    opacity: 1;
+    transform: none;
+    align-self: center;
+    flex-shrink: 0;
+    margin: 0 var(--space-6) 0 var(--space-2);
+    width: 46px;
+    height: 46px;
+}
+@media (max-width: 620px) {
+    .cardRow .thumb { width: 110px; }
+    .cardRow .cardBody { padding: var(--space-4); }
+    .cardRow .quickCart { margin: 0 var(--space-3) 0 0; width: 40px; height: 40px; }
+}
+
+.card:hover {
+    border-color: var(--border-active);
+    transform: translateY(-3px);
+}
+
+/* Banner immagine (etichetta prodotto) */
+.thumb {
+    aspect-ratio: 2 / 1;
+    width: 100%;
+    background: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid var(--border-subtle);
+    overflow: hidden;
+}
+
+/* Lampade LED: foto prodotto su fondo bianco (studio) */
+.thumbLight {
+    background: #fff;
+}
+
+.thumbImg {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: transform 0.5s var(--ease-out-expo);
+}
+
+.card:hover .thumbImg {
+    transform: scale(1.04);
+}
+
+.thumbPlaceholder {
+    width: 70%;
+    height: 70%;
+    object-fit: contain;
+    opacity: 0.85;
+}
+
+.unit {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-tertiary);
+    margin-left: 1px;
+}
+
+.cardBody {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: var(--space-6);
+}
+
+.cardTop {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-2);
+    margin-bottom: var(--space-3);
+}
+
+.familyTag {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--accent-hover);
+    font-weight: 600;
+}
+
+.codice {
+    font-size: 12px;
+    color: var(--text-tertiary);
+    font-variant-numeric: tabular-nums;
+}
+
+.name {
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.3;
+    margin: 0 0 var(--space-2);
+    color: var(--text-primary);
+}
+
+.attrs {
+    font-size: 13px;
+    color: var(--text-secondary);
+    font-variant-numeric: tabular-nums;
+    margin-bottom: var(--space-1);
+}
+
+.appl {
+    font-size: 12px;
+    color: var(--text-tertiary);
+    line-height: 1.4;
+    margin-bottom: var(--space-4);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.priceRow {
+    margin-top: auto;
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--border-subtle);
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--space-2);
+}
+
+.listino {
+    display: flex;
+    flex-direction: column;
+}
+
+.priceLabel {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-tertiary);
+}
+
+.priceValue {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-primary);
+    font-variant-numeric: tabular-nums;
+}
+
+.netto {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    color: var(--text-tertiary);
+}
+
+/* Netto visibile alle officine attive */
+.nettoActive {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    text-align: right;
+}
+
+.nettoValue {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--accent-hover);
+    font-variant-numeric: tabular-nums;
+}
+
+/* ---- Stati ---- */
+.state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-24) var(--space-4);
+    color: var(--text-tertiary);
+    text-align: center;
+}
+
+.retry {
+    margin-top: var(--space-2);
+    padding: 10px 22px;
+    border-radius: 8px;
+    background: var(--accent-primary);
+    color: #fff;
+    font-weight: 600;
+    transition: background 0.2s;
+}
+
+.retry:hover {
+    background: var(--accent-hover);
+}
+
+.skeleton {
+    height: 220px;
+    background: linear-gradient(100deg, var(--surface-light) 30%, var(--surface-dark) 50%, var(--surface-light) 70%);
+    background-size: 200% 100%;
+    animation: shimmer 1.3s infinite linear;
+    border-color: transparent;
+}
+
+@keyframes shimmer {
+    to {
+        background-position: -200% 0;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .skeleton {
+        animation: none;
+    }
+}
+
+@media (max-width: 720px) {
+    .toolbar {
+        position: static;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .searchBox {
+        max-width: none;
+    }
+}

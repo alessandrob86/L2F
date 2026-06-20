@@ -20,18 +20,18 @@
 }
 
 .title {
-    font-family: 'MADE TOMMY', sans-serif;
+    font-family: var(--font-display);
     font-weight: 800;
-    font-size: 3rem;
+    font-size: var(--text-h2);
     color: #ffffff;
     margin-bottom: 1rem;
 }
 
 .subtitle {
-    font-family: 'MADE TOMMY', sans-serif;
+    font-family: var(--font-display);
     font-weight: 300;
     font-size: 1.25rem;
-    color: #b3b3b3;
+    color: var(--text-secondary);
     max-width: 600px;
     margin: 0 auto;
 }
@@ -91,14 +91,14 @@
 }
 
 .flexTitle {
-    font-family: 'MADE TOMMY', sans-serif;
+    font-family: var(--font-display);
     font-weight: 700;
     font-size: 2rem;
     color: #ffffff;
 }
 
 .flexSubtitle {
-    color: #e63935;
+    color: var(--accent-primary);
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.1em;
@@ -156,76 +156,83 @@
     top: -12px;
     left: 50%;
     transform: translateX(-50%);
-    background: #e63935;
+    background: var(--accent-primary);
     color: white;
     padding: 4px 12px;
     border-radius: 12px;
     font-size: 0.75rem;
     font-weight: 700;
     letter-spacing: 0.05em;
-    box-shadow: 0 4px 12px rgba(230, 57, 53, 0.3);
+    box-shadow: 0 4px 12px rgba(195, 35, 39, 0.3);
     z-index: 10;
 }
 
-/* Top Tier Border Beam Effect */
-.topTierCard {
-    position: relative;
-    overflow: hidden;
-    z-index: 1;
-    border-radius: 24px !important;
-    border: none !important;
-    padding: 2.5rem;
+/* Top Tier — bordo con luce rossa che scorre sul perimetro */
+@property --beam-angle {
+    syntax: '<angle>';
+    initial-value: 0deg;
+    inherits: false;
 }
 
+.topTierCard {
+    position: relative;
+    z-index: 1;
+    border-radius: 24px;
+    border: 1px solid var(--border-active);
+    background: linear-gradient(180deg, rgba(195, 35, 39, 0.10) 0%, rgba(20, 20, 20, 0.6) 45%);
+    padding: 2.5rem;
+    box-shadow: 0 0 40px rgba(195, 35, 39, 0.12);
+}
+
+/* Segmento di luce che percorre il bordo */
 .topTierCard::before {
     content: "";
     position: absolute;
-    inset: -4px;
-    z-index: -1;
-    background: conic-gradient(from 0deg,
-            transparent 0deg,
-            transparent 100deg,
-            #e63935 180deg,
-            transparent 280deg,
-            transparent 360deg);
-    animation: borderRotate 3s linear infinite;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1.5px;
+    background: conic-gradient(from var(--beam-angle),
+            transparent 0%,
+            rgba(224, 49, 47, 0.0) 6%,
+            var(--accent-hover) 12%,
+            #ff8784 15%,
+            rgba(224, 49, 47, 0.0) 22%,
+            transparent 100%);
+    /* Mostra il gradiente solo sullo spessore del bordo */
+    -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    animation: beamTravel 5s linear infinite;
+    pointer-events: none;
 }
 
-.topTierCard::after {
-    content: "";
-    position: absolute;
-    inset: 1.5px;
-    z-index: -1;
-    background: rgba(20, 20, 20, 0.95);
-    border-radius: 22.5px;
-    backdrop-filter: blur(20px);
-}
-
-@keyframes borderRotate {
-    from {
-        --angle: 0deg;
-        transform: rotate(0deg);
-    }
-
+@keyframes beamTravel {
     to {
-        --angle: 360deg;
-        transform: rotate(360deg);
+        --beam-angle: 360deg;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .topTierCard::before {
+        animation: none;
+        background: var(--accent-primary);
     }
 }
 
 /* Interaction States */
 .cardSelected {
-    border-color: #e63935;
-    box-shadow: 0 0 30px rgba(230, 57, 53, 0.2);
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 30px rgba(195, 35, 39, 0.2);
     cursor: default;
     z-index: 10;
 }
 
-.cardBlurred {
-    filter: blur(4px);
-    opacity: 0.5;
-    cursor: pointer;
-}
 
 .cardInteractive {
     cursor: pointer;
@@ -240,16 +247,16 @@
 }
 
 .ctaButton {
-    background: #e63935;
+    background: var(--accent-primary);
     color: white;
     padding: 1rem 3rem;
     border-radius: 50px;
-    font-family: 'MADE TOMMY', sans-serif;
+    font-family: var(--font-display);
     font-weight: 700;
     font-size: 1.1rem;
     border: none;
     cursor: pointer;
-    box-shadow: 0 4px 15px rgba(230, 57, 53, 0.4);
+    box-shadow: 0 4px 15px rgba(195, 35, 39, 0.4);
     transition: transform 0.2s, box-shadow 0.2s;
     display: flex;
     align-items: center;
@@ -258,13 +265,13 @@
 
 .ctaButton:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(230, 57, 53, 0.6);
-    background: #ff4d49;
+    box-shadow: 0 8px 25px rgba(195, 35, 39, 0.6);
+    background: var(--accent-hover);
 }
 
 /* Content Typography */
 .packageName {
-    font-family: 'MADE TOMMY', sans-serif;
+    font-family: var(--font-display);
     font-size: 1.5rem;
     font-weight: 700;
     color: #fff;
@@ -272,7 +279,7 @@
 }
 
 .price {
-    font-family: 'MADE TOMMY', sans-serif;
+    font-family: var(--font-display);
     font-size: 2.5rem;
     font-weight: 800;
     color: #fff;
@@ -288,7 +295,7 @@
 
 .vat {
     font-size: 0.875rem;
-    color: #b3b3b3;
+    color: var(--text-secondary);
     font-weight: 400;
 }
 
@@ -311,7 +318,7 @@
 }
 
 .checkIcon {
-    color: #e63935;
+    color: var(--accent-primary);
     flex-shrink: 0;
     margin-top: 2px;
 }
@@ -327,7 +334,7 @@
     align-items: center;
     justify-content: center;
     padding: 2rem;
-    color: #e63935;
+    color: var(--accent-primary);
 }
 
 @media (max-width: 1024px) {
@@ -343,6 +350,6 @@
     height: 100%;
     top: 0;
     left: 0;
-    background: radial-gradient(circle at 50% -20%, rgba(230, 57, 53, 0.15), transparent 70%);
+    background: radial-gradient(circle at 50% -20%, rgba(195, 35, 39, 0.15), transparent 70%);
     pointer-events: none;
 }
