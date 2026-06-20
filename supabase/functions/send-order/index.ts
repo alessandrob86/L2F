@@ -99,7 +99,12 @@ Deno.serve(async (req: Request) => {
     // 1) Notifica magazzino CON l'Excel d'importazione allegato.
     const intestazione = `<p style="margin:0 0 16px"><strong style="color:#fff">${off.ragione_sociale}</strong>${off.codice_cliente ? " · " + off.codice_cliente : ""}${off.citta ? " — " + off.citta : ""}<br/>${off.email ?? ""}${off.telefono ? " · " + off.telefono : ""}${off.piva ? "<br/>P.IVA " + off.piva : ""}</p>`;
     const internalHtml = l2fEmail({ brand: "AUTOMOTIVE", pre: `Nuovo ordine ${numero}`, heading: `Nuovo ordine ${numero}`, body: intestazione + tableHtml + totaliHtml + `<p style="margin:16px 0 0;font-size:13px;color:#8a93a3">In allegato l'Excel da importare nel gestionale.</p>` });
-    const safeNum = String(numero).replace(/[^A-Za-z0-9_-]/g, "");
+    // Nome file Excel: "Nome cliente - Codice officina - Data ordine.xlsx".
+    const sanitize = (s: unknown) => String(s ?? "").replace(/[\\/:*?"<>|]+/g, " ").replace(/\s+/g, " ").trim();
+    const dataOrdine = new Intl.DateTimeFormat("it-IT", { timeZone: "Europe/Rome", day: "2-digit", month: "2-digit", year: "numeric" })
+      .format(new Date((order as any).created_at)).replace(/\//g, "-");
+    const fileParts = [sanitize(off.ragione_sociale), sanitize(off.codice_cliente), dataOrdine].filter(Boolean);
+    const xlsxFilename = `${fileParts.join(" - ") || `ordine-${numero}`}.xlsx`;
     // Genera l'Excel; un eventuale errore non blocca l'email (parte senza allegato).
     let xlsxB64: string | null = null;
     try {
@@ -113,7 +118,7 @@ Deno.serve(async (req: Request) => {
       reply_to: off.email ? [off.email] : undefined,
       subject: `Nuovo ordine ${numero} — ${off.ragione_sociale}`,
       html: internalHtml,
-      attachments: xlsxB64 ? [{ filename: `ordine-${safeNum || "L2F"}.xlsx`, content: xlsxB64 }] : undefined,
+      attachments: xlsxB64 ? [{ filename: xlsxFilename, content: xlsxB64 }] : undefined,
     });
 
     // 2) Conferma al cliente (officina), senza allegato.
