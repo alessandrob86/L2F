@@ -39,7 +39,7 @@ const FALLBACK_PACKAGES: PackageOption[] = [
     {
         id: 'marketing',
         name: 'Flex Marketing',
-        price: 130,
+        price: 1250,
         subtitle: 'Home + Digital',
         isRecommended: true,
         features: [
