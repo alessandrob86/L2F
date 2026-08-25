@@ -30,6 +30,14 @@ export interface Officina {
     /** Add-on FLEX (decisi dall'admin). */
     marketing_attivo: boolean;
     banca_dati_attiva: boolean;
+    /** Storefront di registrazione — pilota l'auto-flag all'attivazione. */
+    origine: 'cra' | 'l2f';
+    /** Abilitata a prezzi netti e ordini sul sito L2F. */
+    l2f_abilitata: boolean;
+    /** Abilitata a prezzi netti e ordini sul sito CRA. */
+    cra_abilitata: boolean;
+    /** Segmento commerciale: decide quale listino prezzi vede il cliente (null = universale). */
+    categoria_cliente: string | null;
 }
 
 export interface RegisterData {
@@ -136,13 +144,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         [loadOfficina, session],
     );
 
+    // "Attiva su L2F" = approvata E abilitata a questo storefront (l'RLS gatta uguale).
+    const l2fActive = officina?.stato === 'attiva' && officina?.l2f_abilitata === true;
+
     const value: AuthState = {
         session,
         user: session?.user ?? null,
         officina,
         loading,
-        isActive: officina?.stato === 'attiva',
-        isPending: !!session && officina?.stato !== 'attiva',
+        isActive: l2fActive,
+        isPending: !!session && !l2fActive,
         isAdmin: officina?.is_admin === true,
         signIn,
         signUp,

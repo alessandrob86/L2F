@@ -16,7 +16,7 @@ Mappa dei contenuti dei due macromondi e delle loro connessioni.
 - Prodotto: [[Catalogo L2F]] - [[Batterie]] - [[Filtri]] - [[Lampade LED]] - [[Lubrificanti]] - [[Pastiglie freno]] - [[Chimica e officina]] - [[Tecnologie batterie]]
 - Progetto: [[Pacchetti HOME e FLEX]] - [[Cashback]] - [[Reso a Vista]] - [[E-commerce B2B]] - [[Area Clienti]]
 - Formazione: [[L2F Academy]] - [[Corsi]]
-- Tecnico/Brand: [[Brand e Design L2F]] - [[Backend Supabase]] - [[Pannello Admin]]
+- Tecnico/Brand: [[Brand e Design L2F]] - [[Backend Supabase]] - [[Pannello Admin]] - [[Catalogo e Sync]] - [[Categorie cliente e Listini]]
 
 ## Mondo CRA
 - [[Sedi CRA]] - [[Servizi CRA]] - [[Brand e Design CRA]] - [[blusys]] - [[Marchi trattati]] - [[Referenze clienti]]

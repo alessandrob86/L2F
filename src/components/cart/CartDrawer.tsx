@@ -103,7 +103,10 @@ export const CartDrawer = () => {
                                                     <div className={styles.rowMain}>
                                                         <span className={styles.rowName}>{it.nome}</span>
                                                         <span className={styles.rowMeta}>
-                                                            {it.codice_l2f}{it.imballo ? ` · ${it.imballo}` : ''}
+                                                            {it.codice_l2f}
+                                                            {/* Per i lubrificanti l'unità di vendita è il contenitore:
+                                                                scriverlo per esteso evita di leggere il fusto come un litro. */}
+                                                            {it.unitaVendita ? ` · ${it.unitaVendita}` : it.imballo ? ` · ${it.imballo}` : ''}
                                                         </span>
                                                         <span className={styles.rowUnit}>{formatEuro(unit)} cad.</span>
                                                     </div>

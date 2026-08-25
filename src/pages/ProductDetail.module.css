@@ -355,6 +355,23 @@
     color: var(--text-tertiary);
 }
 
+/* Che cosa è una unità di vendita ("Fusto 200 L · 13,25 €/L"): sta sotto la
+   cifra grande, che per i lubrificanti è il prezzo del contenitore intero. */
+.perUnit {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    font-variant-numeric: tabular-nums;
+    margin-top: 2px;
+}
+
+/* Come si legge la quantità, subito sopra lo stepper. */
+.venditaNota {
+    margin: var(--space-4) 0 calc(var(--space-2) * -1);
+    font-size: 13px;
+    color: var(--text-tertiary);
+}
+
 .nettoBlock {
     display: flex;
     flex-direction: column;

@@ -7,8 +7,8 @@ import { formatEuro, PLACEHOLDER_IMG } from '../lib/catalog';
 import { statoLabel } from '../lib/orders';
 import {
     getAllOrders, getAllOfficine, updateOrderStato, updateOfficina,
-    ordersToCsv, downloadCsv, ORDER_STATI, getAuditOfficine,
-    type AdminOrder, type AuditEntry,
+    ordersToCsv, downloadCsv, ORDER_STATI, getAuditOfficine, getCategorieCliente,
+    type AdminOrder, type AuditEntry, type CategoriaCliente,
 } from '../lib/admin';
 import {
     getAllCorsi, createCorso, updateCorso, deleteCorso, getIscrizioni, formatDataCorso,
@@ -24,6 +24,7 @@ export const Admin = () => {
     const [tab, setTab] = useState<Tab>('ordini');
     const [orders, setOrders] = useState<AdminOrder[] | null>(null);
     const [officine, setOfficine] = useState<Officina[] | null>(null);
+    const [categorieCliente, setCategorieCliente] = useState<CategoriaCliente[]>([]);
     const [corsi, setCorsi] = useState<CorsoAdmin[] | null>(null);
     const [corsiStat, setCorsiStat] = useState<Record<string, OfficinaCorsiStat>>({});
     const [audit, setAudit] = useState<AuditEntry[] | null>(null);
@@ -40,8 +41,8 @@ export const Admin = () => {
 
     useEffect(() => {
         if (!isAdmin) return;
-        Promise.all([getAllOrders(), getAllOfficine(), getAllCorsi(), getCorsiStatByOfficina()])
-            .then(([o, f, c, cnt]) => { setOrders(o); setOfficine(f); setCorsi(c); setCorsiStat(cnt); })
+        Promise.all([getAllOrders(), getAllOfficine(), getAllCorsi(), getCorsiStatByOfficina(), getCategorieCliente()])
+            .then(([o, f, c, cnt, cc]) => { setOrders(o); setOfficine(f); setCorsi(c); setCorsiStat(cnt); setCategorieCliente(cc); })
             .catch(() => setErr(true));
     }, [isAdmin]);
 
@@ -151,6 +152,8 @@ export const Admin = () => {
                 crediti_corsi: Number(o.crediti_corsi) || 0,
                 marketing_attivo: !!o.marketing_attivo,
                 banca_dati_attiva: !!o.banca_dati_attiva,
+                l2f_abilitata: !!o.l2f_abilitata,
+                cra_abilitata: !!o.cra_abilitata,
             });
             setSavedId(o.id);
             setTimeout(() => setSavedId((s) => (s === o.id ? null : s)), 1800);
@@ -274,6 +277,16 @@ export const Admin = () => {
                                             onChange={(e) => patchOfficina(o.id, { codice_cliente: e.target.value })} />
                                     </label>
                                     <label className={styles.fld}>
+                                        <span>Categoria cliente</span>
+                                        <select value={o.categoria_cliente ?? ''}
+                                            onChange={(e) => patchOfficina(o.id, { categoria_cliente: e.target.value || null })}>
+                                            <option value="">— Nessuna (prezzo universale)</option>
+                                            {categorieCliente.filter((c) => c.attiva).map((c) => (
+                                                <option key={c.id} value={c.id}>{c.nome}</option>
+                                            ))}
+                                        </select>
+                                    </label>
+                                    <label className={styles.fld}>
                                         <span>Pacchetto</span>
                                         <select value={o.pacchetto ?? ''} onChange={(e) => patchOfficina(o.id, { pacchetto: e.target.value || null })}>
                                             <option value="">—</option>
@@ -291,6 +304,19 @@ export const Admin = () => {
                                             <label style={{ display: 'inline-flex', alignItems: 'center', gap: '7px', cursor: 'pointer', fontWeight: 600, fontSize: '0.9rem', color: 'var(--text-primary)', textTransform: 'none', letterSpacing: 0 }}>
                                                 <input type="checkbox" checked={!!o.banca_dati_attiva}
                                                     onChange={(e) => patchOfficina(o.id, { banca_dati_attiva: e.target.checked })} /> Banca dati · L2F Tech
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div className={`${styles.fld} ${styles.fldWide}`}>
+                                        <span>Abilitazione siti · registrata su <strong>{o.origine === 'cra' ? 'CRA' : 'L2F'}</strong></span>
+                                        <div style={{ display: 'flex', gap: '18px', flexWrap: 'wrap', paddingBottom: '8px' }}>
+                                            <label style={{ display: 'inline-flex', alignItems: 'center', gap: '7px', cursor: 'pointer', fontWeight: 600, fontSize: '0.9rem', color: 'var(--text-primary)', textTransform: 'none', letterSpacing: 0 }}>
+                                                <input type="checkbox" checked={!!o.l2f_abilitata}
+                                                    onChange={(e) => patchOfficina(o.id, { l2f_abilitata: e.target.checked })} /> Abilita L2F
+                                            </label>
+                                            <label style={{ display: 'inline-flex', alignItems: 'center', gap: '7px', cursor: 'pointer', fontWeight: 600, fontSize: '0.9rem', color: 'var(--text-primary)', textTransform: 'none', letterSpacing: 0 }}>
+                                                <input type="checkbox" checked={!!o.cra_abilitata}
+                                                    onChange={(e) => patchOfficina(o.id, { cra_abilitata: e.target.checked })} /> Abilita CRA
                                             </label>
                                         </div>
                                     </div>

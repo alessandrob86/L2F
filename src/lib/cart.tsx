@@ -16,9 +16,13 @@ export interface CartItem {
     codice_l2f: string;
     nome: string;
     imballo: string | null;
+    /** Prezzo di UNA unità di vendita: per i lubrificanti è il contenitore
+     *  intero (fusto, latta), non il litro. Vedi unitaVendita() in catalog.ts. */
     prezzo_listino: number | null;
     prezzo_netto: number | null;
     unita: string;
+    /** Che cosa è una unità ("Fusto 200 L"), per scriverlo nel carrello. */
+    unitaVendita?: string | null;
     quantita: number;
     immagine: string | null;
 }
@@ -40,11 +44,15 @@ interface CartState {
     close: () => void;
 }
 
-const STORAGE_KEY = 'l2f_cart_v1';
+/* v2: i lubrificanti sono passati dal prezzo al litro al prezzo del
+   contenitore. Un carrello v1 conterrebbe righe a 3,60 € per un fusto da
+   200 L, quindi la chiave cambia e i vecchi carrelli non risalgono. */
+const STORAGE_KEY = 'l2f_cart_v2';
 const CartContext = createContext<CartState | undefined>(undefined);
 
 function load(): CartItem[] {
     try {
+        localStorage.removeItem('l2f_cart_v1');
         const raw = localStorage.getItem(STORAGE_KEY);
         if (!raw) return [];
         const parsed = JSON.parse(raw);

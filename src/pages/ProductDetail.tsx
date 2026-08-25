@@ -10,6 +10,8 @@ import {
     getProduct,
     formatEuro,
     unitSuffix,
+    unitaVendita,
+    prezzoVendita,
     PLACEHOLDER_IMG,
     type Product,
     type ProductVariant,
@@ -111,6 +113,19 @@ export const ProductDetail = () => {
     const listino = variant ? variant.prezzo_listino : product?.prezzo_listino ?? null;
     const netto = variant ? variant.prezzo_netto ?? null : product?.prezzo_netto ?? null;
     const unita = variant ? variant.unita_prezzo : product?.unitaPrezzo ?? 'pezzo';
+
+    // Gli oli sono prezzati al litro ma si vendono a fusti e a latte: qui il
+    // prezzo diventa quello del contenitore, che è la cifra che si paga.
+    // Il prezzo al litro resta scritto sotto, come riferimento.
+    const uv = unitaVendita(variant);
+    const listinoUnita = prezzoVendita(listino, uv);
+    const nettoUnita = prezzoVendita(netto, uv);
+    /* Il "/L" si mostra solo quando il prezzo grande È quello al litro. */
+    const suffisso = uv.etichetta ? '' : unitSuffix(unita);
+    const riferimento = (base: number | null) =>
+        !uv.etichetta ? null
+            : uv.aContenitore && base != null ? `${uv.etichetta} · ${formatEuro(base)}${unitSuffix(unita)}`
+                : uv.etichetta;
 
     return (
         <main className={styles.page}>
@@ -275,9 +290,12 @@ export const ProductDetail = () => {
                                 <div className={styles.priceBlock}>
                                     <span className={styles.priceLabel}>Prezzo di listino</span>
                                     <span className={styles.priceValue}>
-                                        {formatEuro(listino)}
-                                        <span className={styles.unit}>{unitSuffix(unita)}</span>
+                                        {formatEuro(listinoUnita)}
+                                        <span className={styles.unit}>{suffisso}</span>
                                     </span>
+                                    {riferimento(listino) && (
+                                        <span className={styles.perUnit}>{riferimento(listino)}</span>
+                                    )}
                                     <span className={styles.iva}>IVA esclusa</span>
                                 </div>
 
@@ -285,9 +303,12 @@ export const ProductDetail = () => {
                                     <div className={styles.nettoBlock}>
                                         <span className={styles.priceLabel}>Il tuo prezzo netto</span>
                                         <span className={styles.nettoValue}>
-                                            {formatEuro(netto)}
-                                            <span className={styles.unit}>{unitSuffix(unita)}</span>
+                                            {formatEuro(nettoUnita)}
+                                            <span className={styles.unit}>{suffisso}</span>
                                         </span>
+                                        {riferimento(netto) && (
+                                            <span className={styles.perUnit}>{riferimento(netto)}</span>
+                                        )}
                                     </div>
                                 ) : (
                                     <div className={styles.gated}>
@@ -300,6 +321,8 @@ export const ProductDetail = () => {
                                 )}
 
                                 {isActive ? (
+                                    <>
+                                    {uv.nota && <p className={styles.venditaNota}>{uv.nota}</p>}
                                     <div className={styles.addRow}>
                                         <div className={styles.qtyStepper}>
                                             <button type="button" onClick={() => setQty((q) => Math.max(1, q - 1))} aria-label="Diminuisci"><Minus size={16} /></button>
@@ -316,9 +339,11 @@ export const ProductDetail = () => {
                                                     codice_l2f: variant?.codice_l2f ?? product.codice_l2f,
                                                     nome: product.nome,
                                                     imballo: variant?.imballo ?? null,
-                                                    prezzo_listino: listino,
-                                                    prezzo_netto: netto,
+                                                    // Un fusto entra come confezione intera, non come un litro.
+                                                    prezzo_listino: listinoUnita,
+                                                    prezzo_netto: nettoUnita,
                                                     unita,
+                                                    unitaVendita: uv.etichetta,
                                                     quantita: qty,
                                                     immagine: product.immagine ?? product.immagini?.[0] ?? null,
                                                 });
@@ -329,6 +354,7 @@ export const ProductDetail = () => {
                                             <ShoppingCart size={18} /> Aggiungi al carrello
                                         </button>
                                     </div>
+                                    </>
                                 ) : (
                                     <Link to="/accedi" className={styles.cta}>
                                         Accedi per ordinare

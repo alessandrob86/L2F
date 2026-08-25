@@ -29,11 +29,13 @@ interface RawAdminItem extends Omit<AdminOrderItem, 'immagine'> {
     products?: { immagine: string | null }[] | { immagine: string | null } | null;
 }
 
-/** Tutti gli ordini (solo admin via RLS). */
+/** Tutti gli ordini L2F (solo admin via RLS).
+ *  Filtro sito='l2f': le proposte del CRA Store vivono nel back-office CRA. */
 export async function getAllOrders(): Promise<AdminOrder[]> {
     const { data, error } = await supabase
         .from('orders')
         .select('id, numero, stato, totale_listino, totale_netto, note, created_at, officine(ragione_sociale, codice_cliente, citta, email), order_items(id, codice_l2f, nome, imballo, prezzo_unitario, quantita, products(immagine))')
+        .eq('sito', 'l2f')
         .order('created_at', { ascending: false });
     if (error) throw error;
     return (data ?? []).map((o) => {
@@ -75,6 +77,28 @@ export interface OfficinaPatch {
     crediti_corsi?: number;
     marketing_attivo?: boolean;
     banca_dati_attiva?: boolean;
+    l2f_abilitata?: boolean;
+    cra_abilitata?: boolean;
+    /** Segmento commerciale: decide quale listino prezzi vede il cliente. */
+    categoria_cliente?: string | null;
+}
+
+export interface CategoriaCliente {
+    id: string;
+    nome: string;
+    colore: string | null;
+    attiva: boolean;
+    sort_order: number;
+}
+
+/** Categorie cliente (gestite dal back-office CRA, condivise tra i due siti). */
+export async function getCategorieCliente(): Promise<CategoriaCliente[]> {
+    const { data, error } = await supabase
+        .from('categorie_cliente')
+        .select('id, nome, colore, attiva, sort_order')
+        .order('sort_order');
+    if (error) throw error;
+    return (data ?? []) as CategoriaCliente[];
 }
 
 export async function updateOfficina(id: string, patch: OfficinaPatch): Promise<void> {

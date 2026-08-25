@@ -36,6 +36,12 @@ export interface Product {
     descrizione: string | null;
     scheda_tecnica_url: string | null;
     scheda_sicurezza_url: string | null;
+    /** 'L2F' per il private label, altrimenti il marchio (Brembo, TRW…). */
+    marchio: string;
+    /** Visibile sul sito L2F: vero solo per il private label (vincolo a DB). */
+    su_l2f: boolean;
+    /** Visibile sul CRA Store. */
+    su_cra: boolean;
     /** Solo officine attive (RLS). */
     prezzo_netto?: number | null;
     variants: ProductVariant[];
@@ -64,6 +70,45 @@ interface ProductRow extends Omit<Product, 'prezzo_netto' | 'variants' | 'hasVar
 
 function unwrapNetto(pn: { prezzo_netto: number }[] | { prezzo_netto: number } | null | undefined): number | null {
     return Array.isArray(pn) ? pn[0]?.prezzo_netto ?? null : pn?.prezzo_netto ?? null;
+}
+
+interface NettoUtenteRow {
+    product_id: string | null;
+    variant_id: string | null;
+    prezzo_netto: number;
+}
+
+/**
+ * Netti risolti per l'utente loggato: prezzo del listino assegnato alla sua
+ * categoria cliente, con fallback al netto universale. Le tabelle
+ * listino_prezzi_* sono admin-only: si passa dalla funzione SECURITY DEFINER,
+ * così il client non può vedere i prezzi di altri segmenti.
+ */
+async function nettiUtente(): Promise<{ prodotti: Map<string, number>; varianti: Map<string, number> }> {
+    const { data, error } = await supabase.rpc('l2f_netto_utente');
+    if (error) throw error;
+    const prodotti = new Map<string, number>();
+    const varianti = new Map<string, number>();
+    for (const r of (data ?? []) as NettoUtenteRow[]) {
+        if (r.product_id) prodotti.set(r.product_id, r.prezzo_netto);
+        else if (r.variant_id) varianti.set(r.variant_id, r.prezzo_netto);
+    }
+    return { prodotti, varianti };
+}
+
+/** Sovrascrive i netti universali arrivati dal join con quelli del cliente. */
+function applicaNetti(
+    rows: ProductRow[],
+    netti: { prodotti: Map<string, number>; varianti: Map<string, number> },
+): void {
+    for (const r of rows) {
+        const p = netti.prodotti.get(r.id);
+        if (p != null) r.product_netto = { prezzo_netto: p };
+        for (const v of r.product_variants ?? []) {
+            const pv = netti.varianti.get(v.id);
+            if (pv != null) v.product_variant_netto = { prezzo_netto: pv };
+        }
+    }
 }
 
 function normalize(row: ProductRow): Product {
@@ -152,7 +197,8 @@ export async function getProductLines(): Promise<ProductLine[]> {
 export async function getCategories(): Promise<Category[]> {
     const [famRes, prodRes] = await Promise.all([
         supabase.from('product_families').select('*').order('sort_order', { ascending: true }),
-        supabase.from('products').select('family_id').eq('attivo', true),
+        // Stesso filtro dell'elenco, altrimenti la home dichiara numeri che la lista smentisce.
+        supabase.from('products').select('family_id').eq('attivo', true).eq('su_l2f', true),
     ]);
     if (famRes.error) throw famRes.error;
     if (prodRes.error) throw prodRes.error;
@@ -180,10 +226,15 @@ export async function getProducts(opts: GetProductsOpts = {}, withNetto = false)
     const select = withNetto
         ? '*, product_netto(prezzo_netto), product_variants(id, codice_l2f, imballo, prezzo_listino, unita_prezzo, sort_order, product_variant_netto(prezzo_netto))'
         : '*, product_variants(id, codice_l2f, imballo, prezzo_listino, unita_prezzo, sort_order)';
+    // su_l2f: questo è il sito ufficiale del private label, i marchi generici
+    // (Brembo, TRW…) vivono solo sul portale CRA. La RLS applica la stessa
+    // regola lato database, ma per un utente admin lascia passare tutto:
+    // il filtro qui non è ridondante.
     let query = supabase
         .from('products')
         .select(select)
         .eq('attivo', true)
+        .eq('su_l2f', true)
         .order('codice_l2f', { ascending: true });
 
     if (familyId) query = query.eq('family_id', familyId);
@@ -204,22 +255,32 @@ export async function getProducts(opts: GetProductsOpts = {}, withNetto = false)
         query = query.or(conds.join(','));
     }
 
-    const { data, error } = await query;
-    if (error) throw error;
-    return ((data ?? []) as unknown as ProductRow[]).map(normalize);
+    const [res, netti] = await Promise.all([
+        query,
+        withNetto ? nettiUtente() : Promise.resolve(null),
+    ]);
+    if (res.error) throw res.error;
+    const rows = (res.data ?? []) as unknown as ProductRow[];
+    if (netti) applicaNetti(rows, netti);
+    return rows.map(normalize);
 }
 
 export async function getProduct(codice: string, withNetto = false): Promise<Product | null> {
     const select = withNetto
         ? '*, product_netto(prezzo_netto), product_variants(*, product_variant_netto(prezzo_netto))'
         : '*, product_variants(*)';
-    const { data, error } = await supabase
-        .from('products')
-        .select(select)
-        .eq('codice_l2f', codice)
-        .maybeSingle();
-    if (error) throw error;
-    return data ? normalize(data as unknown as ProductRow) : null;
+    const [res, netti] = await Promise.all([
+        // Anche qui attivo + su_l2f: senza, un prodotto spento o a marchio
+        // generico resta raggiungibile scrivendo l'URL a mano.
+        supabase.from('products').select(select)
+            .eq('codice_l2f', codice).eq('attivo', true).eq('su_l2f', true).maybeSingle(),
+        withNetto ? nettiUtente() : Promise.resolve(null),
+    ]);
+    if (res.error) throw res.error;
+    if (!res.data) return null;
+    const row = res.data as unknown as ProductRow;
+    if (netti) applicaNetti([row], netti);
+    return normalize(row);
 }
 
 const euro = new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' });
@@ -228,3 +289,70 @@ export const formatEuro = (n: number | null | undefined): string =>
 
 /** Suffisso unità di misura per il prezzo (es. "/L" per i lubrificanti). */
 export const unitSuffix = (unita: string): string => (unita === 'litro' ? '/L' : '');
+
+/* ---------- Unità di vendita ---------- */
+
+/** Che cosa si porta a casa con una unità di questa variante.
+ *
+ *  I lubrificanti hanno il prezzo **al litro**, ma non si vendono a litri
+ *  sfusi: si vendono a fusti e a latte. Senza questa conversione un fusto da
+ *  200 L finisce in carrello al prezzo di un litro — 3,60 € invece di 720 €.
+ *
+ *  Le scatole "12×1 L" restano moltiplicatore 1: lì l'unità di vendita è la
+ *  bottiglia da 1 L, e il prezzo al litro è già il prezzo di una bottiglia.
+ *  Il cartone da 12 resta scritto nell'etichetta perché si veda. */
+export interface UnitaVendita {
+    /** Quanti litri (o pezzi) di prezzo entrano in una unità di vendita. */
+    fattore: number;
+    /** Che cosa è una unità: "Fusto 200 L", "1 L · cartone da 12". Null = pezzo semplice. */
+    etichetta: string | null;
+    /** Come si legge la quantità: "La quantità è in fusti da 200 L". */
+    nota: string | null;
+    /** true quando il prezzo di riga è al litro e va moltiplicato per il contenitore. */
+    aContenitore: boolean;
+}
+
+const UNITA_SEMPLICE: UnitaVendita = { fattore: 1, etichetta: null, nota: null, aContenitore: false };
+
+/** Nome del contenitore in base alla capacità: sotto i 60 L è una latta. */
+const contenitore = (litri: number) => (litri >= 60 ? 'fusto' : 'latta');
+
+export function unitaVendita(
+    v: { imballo: string | null; unita_prezzo: string } | null | undefined,
+): UnitaVendita {
+    const imballo = String(v?.imballo ?? '').trim();
+    if (!imballo) return UNITA_SEMPLICE;
+
+    // "12×1 L" / "12x1 Kg": confezione multipla, si vende il singolo pezzo.
+    const multi = imballo.match(/^(\d+)\s*[x×]\s*(\d+(?:[.,]\d+)?)\s*(l|kg)\b/i);
+    if (multi) {
+        const [, pezzi, taglio, um] = multi;
+        const unita = `${taglio} ${um.toUpperCase() === 'KG' ? 'Kg' : 'L'}`;
+        return {
+            fattore: 1,
+            etichetta: `${unita} · cartone da ${pezzi}`,
+            nota: `La quantità è in confezioni da ${unita} (cartone da ${pezzi}).`,
+            aContenitore: false,
+        };
+    }
+
+    // "200 L" col prezzo al litro: una unità è il contenitore intero.
+    if (v?.unita_prezzo !== 'litro') return UNITA_SEMPLICE;
+    const solo = imballo.match(/^(\d+(?:[.,]\d+)?)\s*l\b/i);
+    if (!solo) return UNITA_SEMPLICE;
+    const litri = Number(solo[1].replace(',', '.'));
+    if (!(litri > 1)) return UNITA_SEMPLICE;
+    const nome = contenitore(litri);
+    return {
+        fattore: litri,
+        etichetta: `${nome.charAt(0).toUpperCase()}${nome.slice(1)} ${litri} L`,
+        nota: `La quantità è in ${nome === 'fusto' ? 'fusti' : 'latte'} da ${litri} L.`,
+        aContenitore: true,
+    };
+}
+
+/** Prezzo di una unità di vendita, arrotondato al centesimo. */
+export const prezzoVendita = (
+    prezzo: number | null | undefined,
+    uv: UnitaVendita,
+): number | null => (prezzo == null ? null : Math.round(prezzo * uv.fattore * 100) / 100);
