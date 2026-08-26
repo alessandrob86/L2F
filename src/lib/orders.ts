@@ -20,6 +20,10 @@ export async function submitOrder(params: {
         .from('orders')
         .insert({
             officina_id: officinaId,
+            // Scritto a mano e non lasciato al default del database: ora le letture
+            // (getMyOrders, getAllOrders) filtrano su 'sito', quindi un domani un
+            // default diverso farebbe sparire gli ordini invece di dare errore.
+            sito: 'l2f',
             note: note?.trim() || null,
             totale_listino: totaleListino,
             totale_netto: totaleNetto,
@@ -83,6 +87,9 @@ export async function getMyOrders(): Promise<OrderSummary[]> {
     const { data, error } = await supabase
         .from('orders')
         .select('id, numero, stato, totale_listino, totale_netto, note, created_at, order_items(id, codice_l2f, nome, imballo, prezzo_unitario, quantita, products(immagine))')
+        // Un'officina abilitata a entrambi i canali ha ordini anche sul CRA Store:
+        // qui deve vedere solo i propri ordini L2F, non codici e prezzi mescolati.
+        .eq('sito', 'l2f')
         .order('created_at', { ascending: false });
     if (error) throw error;
     return (data ?? []).map((o) => {

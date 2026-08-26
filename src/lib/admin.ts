@@ -58,11 +58,20 @@ export async function updateOrderStato(id: string, stato: string): Promise<void>
     if (error) throw error;
 }
 
-/** Tutte le officine (solo admin via RLS). */
+/** Officine con un accesso (solo admin via RLS).
+ *  Esclude lo stato 'anagrafica' — i clienti importati dal gestionale che non
+ *  hanno mai attivato un account: sono la quasi totalità delle 3.376 righe, e
+ *  senza filtro la select sbatte contro il tetto di 1.000 righe dell'API,
+ *  mostrando un elenco troncato senza avvisare. Il filtro riallinea anche i dati
+ *  al tipo StatoOfficina, che 'anagrafica' non lo prevede nemmeno.
+ *  La versione con ricerca e paginazione esiste già nel back-office CRA
+ *  (C:\Progetti lavoro\Cra2.0\src\lib\adminApi.js, funzione getOfficine) e va portata
+ *  di qua quando i clienti con accesso si avvicineranno al migliaio. */
 export async function getAllOfficine(): Promise<Officina[]> {
     const { data, error } = await supabase
         .from('officine')
         .select('*')
+        .neq('stato', 'anagrafica')
         .order('created_at', { ascending: false });
     if (error) throw error;
     return (data ?? []) as Officina[];
